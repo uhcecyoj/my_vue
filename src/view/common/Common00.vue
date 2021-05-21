@@ -19,6 +19,16 @@
         staticData
       }}
     </div>
+
+    <dv>
+      <!-- v-model = v-bind + v-on -->
+      <input type="button" @click="doSome()" />
+      <input type="text" v-model="inputMsg" placeholder="输入内容" />
+      <p>{{ inputMsg }}</p>
+      <div v-for="(val, index) in numbers" :key="index">
+        {{ val }} {{ reversedMessage }}
+      </div>
+    </dv>
   </div>
 </template>
 
@@ -26,9 +36,36 @@
 export default {
   name: "Common00",
   data() {
-    return {};
+    return {
+      inputMsg: "initMsg",
+      numbers: [1, 2, 3, 4, 5, 6, 7],
+    };
   },
-  computed: {},
+  computed: {
+    reversedMessage: function () {
+      return this.inputMsg;
+    },
+  },
+  watch: {
+    // watch String
+    inputMsg: {
+      handler(val, oldVal) {
+        console.log("---------------");
+        console.log("val: " + val);
+        console.log("oldVal:" + oldVal);
+        console.log("---------------");
+      },
+      deep: false,
+      // 绑定监听时 是否执行
+      immediate: true,
+    },
+  },
+  methods: {
+    doSome: function () {
+      this.inputMsg += "asdf";
+      this.$emit('childFn', 'this is a message from child_common00');
+    },
+  },
   props: {
     data01: {
       type: String, //指定传入的类型

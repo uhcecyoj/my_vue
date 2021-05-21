@@ -1,10 +1,15 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <h1>show child component val: {{ childMsg }}</h1>
     <!-- 内部组件 -->
     <in-component00 v-bind:ic00tip="listObj00"></in-component00>
     <!-- 外部组件 -->
-    <common-00 v-bind:data01="data01" static-data="static data">
+    <common-00
+      v-bind:data01="data01"
+      static-data="static data"
+      @childFn="childFn"
+    >
       <span slot="slot00" style="background-color: green"
         >common00 插槽内容</span
       >
@@ -23,6 +28,7 @@ export default {
   name: "HelloWorld",
   data() {
     return {
+      childMsg: "",
       msg: "Welcome to Your Vue.js App",
       data00: "data00_val",
       data01: "data01_val",
@@ -33,7 +39,16 @@ export default {
       ],
     };
   },
-  methods: {},
+  // mounted:在模板渲染成html后调用，通常是初始化页面完成后，再对html的dom节点进行一些需要的操作
+  mounted: {},
+  // created:在模板渲染成html前调用，即通常初始化某些属性值，然后再渲染成视图。
+  created: {},
+  methods: {
+    childFn: function (payload) {
+      console.log(payload);
+      this.childMsg = payload;
+    },
+  },
   components: {
     // ============================================================
     // 内部组件
